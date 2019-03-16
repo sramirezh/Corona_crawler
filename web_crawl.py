@@ -102,6 +102,13 @@ def search():
     time.sleep(15)
     print('Results ready!')
     
+def price_formatter(prices):
+    """
+    To obtain the prices in pounds (as unicode) and remove the sign
+    """
+    price_list = [value.text.encode('ascii','ignore') for value in prices]
+    
+    return price_list
     
 
 df = pd.DataFrame()
@@ -114,6 +121,7 @@ def compile_data():
     global durations_list
     global stops_list
     global layovers_list
+    global prices
     #departure times
     dep_times = browser.find_elements_by_xpath("//span[@data-test-id='departure-time']")
     dep_times_list = [value.text for value in dep_times]
@@ -125,7 +133,7 @@ def compile_data():
     airlines_list = [value.text for value in airlines]
     #prices
     prices = browser.find_elements_by_xpath("//span[@data-test-id='listing-price-dollars']")
-    price_list = [value.text.split("$")[1] for value in prices]
+    price_list =  price_formatter(prices)
     #durations
     durations = browser.find_elements_by_xpath("//span[@data-test-id='duration']")
     durations_list = [value.text for value in durations]
@@ -172,7 +180,7 @@ def compile_data():
     
     
     
-link = 'https://www.expedia.com/'
+link = 'https://www.expedia.co.uk/'
 browser.get(link)
 time.sleep(5)
 #choose flights only
@@ -181,8 +189,8 @@ flights_only.click()
 ticket_chooser(return_ticket)
 dep_country_chooser('Cairo')
 arrival_country_chooser('New york')
-dep_date_chooser('04', '01', '2019')
-return_date_chooser('05', '02', '2019')
+dep_date_chooser('04', '06', '2019')
+return_date_chooser('05', '06', '2019')
 search()
 compile_data()
     
