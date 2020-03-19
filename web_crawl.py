@@ -39,12 +39,21 @@ def ticket_chooser(ticket):
 """
 The general idea for the next functions is: 
     -to get the id of the field, inspecting the website.
+    Inspect the element, go to the property tab and copy the id
     -clearing the field
     -filling it with send_keys
 """
 
-def dep_country_chooser(dep_country):
-    fly_from = browser.find_element_by_xpath("//input[@id='flight-origin-hp-flight']")
+def dep_country_chooser(dep_country,leg):
+    if leg==1:
+        id_element='flight-origin-hp-flight'
+    else:
+        id_element='flight-%d-origin-hp-flight'%leg
+    
+    path="//input[@id='%s']"%id_element
+        
+    
+    fly_from = browser.find_element_by_xpath(path)
     time.sleep(1)
     fly_from.clear()
     time.sleep(1.5)
@@ -56,11 +65,18 @@ def dep_country_chooser(dep_country):
     
     
 
-def arrival_country_chooser(arrival_country):
+def arrival_country_chooser(arrival_country,leg):
     """
     time.sleep is required to give time for the website to look for information
     """
-    fly_to = browser.find_element_by_xpath("//input[@id='flight-destination-hp-flight']")
+    if leg==1:
+        id_element='flight-destination-hp-flight'
+    else:
+        id_element='flight-%d-destination-hp-flight'%leg
+    
+    path="//input[@id='%s']"%id_element
+    
+    fly_to = browser.find_element_by_xpath(path)
     time.sleep(1)
     fly_to.clear()
     time.sleep(1.5)
@@ -72,14 +88,22 @@ def arrival_country_chooser(arrival_country):
     
     
 
-def dep_date_chooser(month, day, year):
-    dep_date_button = browser.find_element_by_xpath("//input[@id='flight-departing-hp-flight']")
+def dep_date_chooser(month, day, year,leg=0):
+    
+    if leg==1:
+        id_element='flight-departing-single-hp-flight'
+    elif leg>1:
+        id_element='flight-%d-departing-hp-flight'%leg
+    else:
+        id_element='flight-departing-hp-flight'
+    path="//input[@id='%s']"%id_element
+    dep_date_button = browser.find_element_by_xpath(path)
     dep_date_button.clear()
     dep_date_button.send_keys(month + '/' + day + '/' + year)
     
     
     
-def return_date_chooser(month, day, year):
+def return_date_chooser(month, day, year,leg):
     
     """
     For the return date, clearing whatever was written wasn't working for some reason (probably due to 
@@ -90,7 +114,15 @@ def return_date_chooser(month, day, year):
     to click backspace 11 times to delete all the characters for the date in the field.
     """
     
-    return_date_button = browser.find_element_by_xpath("//input[@id='flight-returning-hp-flight']")
+    if leg==1:
+        id_element='flight-returning-hp-flight'
+    else:
+        id_element='flight-%d-returning-hp-flight'%leg
+    
+    path="//input[@id='%s']"%id_element
+    
+    
+    return_date_button = browser.find_element_by_xpath(path)
     for i in range(11):
         return_date_button.send_keys(Keys.BACKSPACE)
     return_date_button.send_keys(month + '/' + day + '/' + year)
@@ -186,11 +218,16 @@ time.sleep(5)
 #choose flights only
 flights_only = browser.find_element_by_xpath("//button[@id='tab-flight-tab-hp']")
 flights_only.click()
-ticket_chooser(return_ticket)
-dep_country_chooser('Cairo')
-arrival_country_chooser('New york')
-dep_date_chooser('04', '06', '2019')
-return_date_chooser('05', '06', '2019')
+ticket_chooser(multi_ticket)
+dep_country_chooser('London',1)
+arrival_country_chooser('Cluj',1)
+dep_date_chooser('31', '07', '2019',1)
+#return_date_chooser('05', '06', '2019',1)
+
+dep_country_chooser('Bucharest',2)
+arrival_country_chooser('London',2)
+dep_date_chooser('08', '08', '2019',2)
+#return_date_chooser('05', '06', '2019',1)
 search()
 compile_data()
     
