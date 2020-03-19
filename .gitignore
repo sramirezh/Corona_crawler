@@ -1,0 +1,14 @@
+#ignore everything
+*
+*.gsd
+# But not these files...
+!.gitignore
+!*.py
+!*.sh
+!*.c
+!*.cpp
+!*.h
+!*.ipynb
+!*.yml
+# ...even if they are in subdirectories
+!*/
