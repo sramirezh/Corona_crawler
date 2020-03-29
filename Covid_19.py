@@ -33,7 +33,7 @@ import multiprocessing
 
 class Coronavirus():
   def __init__(self):
-    self.driver = webdriver.Chrome(chrome_options = chrome_options)
+    self.driver = webdriver.Chrome(options = chrome_options)
     self.driver.get('https://www.worldometers.info/coronavirus/')
 
 # To run it headless
@@ -97,8 +97,8 @@ class WebTable:
         # get number of rows
         allData = []
         # iterate over the rows, to ignore the headers we have started the i with '1'
-        num_cores = multiprocessing.cpu_count()
-        msd=Parallel(n_jobs=num_cores)(delayed(compute_one_msd)(pos,i+1,"single") for i in tqdm(range(max_delta)))    
+#        num_cores = multiprocessing.cpu_count()
+#        allData = Parallel(n_jobs = num_cores)(delayed(self.row_data)(i+1) for i in tqdm(self.row_number))    
         for i in tqdm(range(self.row_number)):
             # reset the row data every time
             row = self.row_data(i+1)
@@ -106,18 +106,29 @@ class WebTable:
             
         return allData
 
+
+#"""
+#Using selenium methods
+#"""  
+#w = WebTable(table,"d")
+#h = WebTable(header,"h")
+#
+#print("No of rows : ", w.get_row_count())
+#print("------------------------------------")
+#print("No of cols : ", w.get_column_count())
+#print("------------------------------------")
+#print("Table size : ", w.get_table_size())
+#data = w.get_all_data()
+#header = h.get_all_data()
+        
     
     
-    
-w = WebTable(table,"d")
-h = WebTable(header,"h")
+"""
+Using the patterns in the text
+"""
 
-print("No of rows : ", w.get_row_count())
-print("------------------------------------")
-print("No of cols : ", w.get_column_count())
-print("------------------------------------")
-print("Table size : ", w.get_table_size())
+rows = table.text.split('\n') #Need to be splitted in a smart way
+h = header.text.split(' ')
 
 
-data = w.get_all_data()
-header = h.get_all_data()
+get rows
