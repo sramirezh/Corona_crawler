@@ -129,7 +129,7 @@ class WebTable:
 #header = h.get_all_data()
         
     
-    
+# To read the entire HTML code
 table_HTML = table.get_attribute("outerHTML")
     
 """
