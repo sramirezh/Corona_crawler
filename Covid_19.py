@@ -31,22 +31,29 @@ import multiprocessing
 
 
 
-class Coronavirus():
-  def __init__(self):
-    self.driver = webdriver.Chrome(options = chrome_options)
-    self.driver.get('https://www.worldometers.info/coronavirus/')
+#class Coronavirus():
+#  def __init__(self):
+#    self.driver = webdriver.Chrome(options = chrome_options)
+#    self.driver.get('https://www.worldometers.info/coronavirus/')
+#
+## To run it headless
+#chrome_options = Options()  
+#chrome_options.add_argument("--headless")  
+#
+#
+#    
+#
+#bot = Coronavirus()
+#
+#table = bot.driver.find_element_by_xpath('//*[@id="main_table_countries_today"]/tbody[1]') # There are 2 table bodies
+#header = bot.driver.find_element_by_xpath('//*[@id="main_table_countries_today"]/thead')
 
-# To run it headless
-chrome_options = Options()  
-chrome_options.add_argument("--headless")  
 
 
-    
 
-bot = Coronavirus()
 
-table = bot.driver.find_element_by_xpath('//*[@id="main_table_countries_today"]/tbody[1]') # There are 2 table bodies
-header = bot.driver.find_element_by_xpath('//*[@id="main_table_countries_today"]/thead')
+
+
 
 #country_element = table.find_element_by_xpath("//tr[contains(text(), 'USA')]")
     
@@ -123,6 +130,8 @@ class WebTable:
         
     
     
+table_HTML = table.get_attribute("outerHTML")
+    
 """
 Using the patterns in the text
 """
@@ -130,5 +139,19 @@ Using the patterns in the text
 rows = table.text.split('\n') #Need to be splitted in a smart way
 h = header.text.split(' ')
 
+#table = []
+for row in rows:
+    temp = row.split()
+    
+    
+#for element in rows[1]:
+#    numbers = re.findall(r"-?\ *[0-9]+\.?[0-9]*(?:[Ee]\ *-?\ *[0-9]+)?",element)
+#    print (numbers)
 
-get rows
+
+# This is to see if some characters are numbers
+re.findall(r'[\d]', partido[0])
+
+
+
+#get rows
