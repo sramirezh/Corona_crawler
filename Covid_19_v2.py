@@ -50,7 +50,7 @@ def get_main_table(url):
     #For each row, store each first element (header) and an empty list
     for t in tr_elements[0]:
         i+=1
-        name=t.text_content()
+        name = t.text_content()
         col.append((name,[]))
         
         
@@ -74,7 +74,6 @@ def get_main_table(url):
         #Iterate through each element of the row
         for t in T.iterchildren():
             data = t.text_content() 
-            print (data)
             #Check if row is empty
             if i>0:
             #Convert any numerical value to integers
@@ -89,6 +88,7 @@ def get_main_table(url):
             
     Dict={title:column for (title,column) in col}
     df=pd.DataFrame(Dict)
+    
     
     return df
 
@@ -110,17 +110,39 @@ def longest_per_column(table, header):
         
     return total
 
+
 df = get_main_table('https://www.worldometers.info/coronavirus/')
-table = df.values
 header = df.columns[:4]
+
+
+# Dummy column to sort
+df[header[1]] = df[header[1]].astype(str) # to be able to use next line
+df['sort_column'] = df[header[1]].str.replace(',','', regex=True)
+
+table = df.values
+
+
+
+#TODO df has twice the same table, check the tr_elements
+index = np.where(table == header[0])[0][0]  # The table repeats itself here
+table = table[:index,:]
+table[:,-1] = table[:,-1].astype(float)
+
+df2 = pd.DataFrame(table)
+
+# Sorting the table based on the total cases
+table = table[table[:,-1].argsort()][::-1]
+
+# Working on the top 10
 lengths = longest_per_column(table[:11,:4],header)
+
 
 
 print ("\u001b[1m C-19\n") #http://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
 
 # Getting the longest string 
 print(f"{header[0]:<{lengths[0]}}\t{header[1]:<{lengths[1]}}\t{header[2]:<{lengths[2]}}\t{header[3]:<{lengths[3]}}")  #https://stackoverflow.com/questions/8234445/python-format-output-string-right-alignment
-print (f"{table[0][0]:<{lengths[0]}}\t{table[0][1]:<{lengths[1]}}\t{table[0][2]:<{lengths[2]}}\t{table[0][3]:<{lengths[3]}}")
+print (f"{table[1][0]:<{lengths[0]}}\t{table[1][1]:<{lengths[1]}}\t{table[1][2]:<{lengths[2]}}\t{table[1][3]:<{lengths[3]}}")
 print("---")
-for i in range(1,11):
+for i in range(2,11):
     print (f"{table[i][0]:<{lengths[0]}}\t{table[i][1]:<{lengths[1]}}\t{table[i][2]:<{lengths[2]}}\t{table[i][3]:<{lengths[3]}}") #https://realpython.com/python-f-strings/

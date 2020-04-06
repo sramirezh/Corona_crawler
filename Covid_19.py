@@ -27,7 +27,7 @@ from tqdm import tqdm
 from joblib import Parallel, delayed
 import pandas as pd
 import multiprocessing
-
+import re
 
 
 
@@ -150,7 +150,7 @@ for row in rows:
 
 
 # This is to see if some characters are numbers
-re.findall(r'[\d]', partido[0])
+#re.findall(r'[\d]', partido[0])
 
 
 
