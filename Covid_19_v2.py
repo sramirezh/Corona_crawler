@@ -137,6 +137,10 @@ table = table[table[:,-1].argsort()][::-1]
 lengths = longest_per_column(table[:11,:4],header)
 
 
+target_country = 'Colombia'
+
+ind_target = np.where(table[:,0] == target_country)[0][0]
+
 
 print ("\u001b[1m C-19\n") #http://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
 
@@ -146,3 +150,8 @@ print (f"{table[1][0]:<{lengths[0]}}\t{table[1][1]:<{lengths[1]}}\t{table[1][2]:
 print("---")
 for i in range(2,11):
     print (f"{table[i][0]:<{lengths[0]}}\t{table[i][1]:<{lengths[1]}}\t{table[i][2]:<{lengths[2]}}\t{table[i][3]:<{lengths[3]}}") #https://realpython.com/python-f-strings/
+    
+print("---")
+i = ind_target
+print (f"{table[i][0]:<{lengths[0]}}\t{table[i][1]:<{lengths[1]}}\t{table[i][2]:<{lengths[2]}}\t{table[i][3]:<{lengths[3]}}| color=orange")
+
